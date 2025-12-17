@@ -1,19 +1,22 @@
 import { useState } from 'react'
 import './App.css'
+import pfLogo from './assets/PFlogo.png'
 
-// Placeholder - will be replaced with actual components
+const version = '1.1.0'
+
 function App() {
   const [activeTab, setActiveTab] = useState<'route' | 'whereami' | 'refinery'>('route')
 
   return (
     <div className="app">
       <header className="app-header">
-        <div className="header-content">
-          <div className="header-title">
-            <h1>Band Hopper</h1>
-            <span className="subtitle">Aaron Halo Mining Navigator</span>
-          </div>
-          <span className="version">v1.1.0</span>
+        <a href="https://peacefroggaming.com" target="_blank" rel="noopener noreferrer" title="PeaceFrog Gaming">
+          <img src={pfLogo} alt="PeaceFrog Gaming" className="header-logo" />
+        </a>
+        <div className="header-title">
+          <h1>Band Hopper</h1>
+          <span className="subtitle">Aaron Halo Mining Navigator</span>
+          <span className="version">v{version}</span>
         </div>
       </header>
 
