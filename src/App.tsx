@@ -1,19 +1,37 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import './App.css'
+import pfLogo from './assets/PFlogo.png'
+import { RoutePlanner } from './components/RoutePlanner'
+import { analyzePosition, parseDistance, formatDistance } from './utils/calculator'
+import { HALO_INNER_EDGE, HALO_OUTER_EDGE } from './types/bands'
 
-// Placeholder - will be replaced with actual components
+const version = '1.2.0'
+
 function App() {
   const [activeTab, setActiveTab] = useState<'route' | 'whereami' | 'refinery'>('route')
+  const [distanceInput, setDistanceInput] = useState<string>('')
+
+  // Analyze position when input changes
+  const positionAnalysis = useMemo(() => {
+    if (!distanceInput.trim()) return null;
+
+    // Try parsing the input
+    const distance = parseDistance(distanceInput);
+    if (distance === null || distance <= 0) return null;
+
+    return analyzePosition(distance);
+  }, [distanceInput]);
 
   return (
     <div className="app">
       <header className="app-header">
-        <div className="header-content">
-          <div className="header-title">
-            <h1>Aaron Halo Guide</h1>
-            <span className="subtitle">Star Citizen Navigation</span>
-          </div>
-          <span className="version">v1.0.0</span>
+        <a href="https://peacefroggaming.com" target="_blank" rel="noopener noreferrer" title="PeaceFrog Gaming">
+          <img src={pfLogo} alt="PeaceFrog Gaming" className="header-logo" />
+        </a>
+        <div className="header-title">
+          <h1>Band Hopper</h1>
+          <span className="subtitle">Aaron Halo Mining Navigator</span>
+          <span className="version">v{version}</span>
         </div>
       </header>
 
@@ -45,30 +63,7 @@ function App() {
           <div className="panel">
             <h2>Route Planner</h2>
             <p className="text-muted">Select your start and destination to calculate exit distances for each Aaron Halo band.</p>
-
-            <div className="form-group">
-              <label>Start Location</label>
-              <select>
-                <option value="">Select start...</option>
-                <option value="arc-l1">ARC-L1 Wide Forest Station</option>
-                <option value="hur-l2">HUR-L2 Faithful Dream Station</option>
-                <option value="cru-l1">CRU-L1 Ambitious Dream Station</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label>Destination</label>
-              <select>
-                <option value="">Select destination...</option>
-                <option value="hur-l5">HUR-L5 High Course Station</option>
-                <option value="cru-l4">CRU-L4 Shallow Fields Station</option>
-                <option value="arc-l3">ARC-L3 Modern Express Station</option>
-              </select>
-            </div>
-
-            {/* Placeholder for results */}
-            <div className="display-label">Exit Distance to Band 5</div>
-            <div className="display-large">14,292,609 km</div>
+            <RoutePlanner />
           </div>
         )}
 
@@ -79,11 +74,81 @@ function App() {
 
             <div className="form-group">
               <label>Distance to Stanton (km)</label>
-              <input type="number" placeholder="e.g., 20300000" />
+              <input
+                type="text"
+                placeholder="e.g., 20300000 or 20.3M"
+                value={distanceInput}
+                onChange={(e) => setDistanceInput(e.target.value)}
+              />
+              <span className="text-muted" style={{ fontSize: '0.8rem' }}>
+                Accepts: plain numbers, "20.3M km", or "20300K"
+              </span>
             </div>
 
-            <div className="display-label">Current Position</div>
-            <div className="display-large text-success">Band 5</div>
+            {positionAnalysis && (
+              <div className="position-results">
+                <div className="display-label">Current Position</div>
+                <div className={`display-large ${positionAnalysis.isInHalo ? 'text-success' : 'text-warning'}`}>
+                  {positionAnalysis.currentBand
+                    ? positionAnalysis.currentBand.name
+                    : positionAnalysis.isInHalo
+                      ? 'Between Bands'
+                      : 'Outside Halo'}
+                </div>
+
+                <div className="position-details">
+                  <p>{positionAnalysis.positionDescription}</p>
+
+                  {positionAnalysis.currentBand && (
+                    <div className="band-info">
+                      <span className="info-label">Band Range:</span>
+                      <span className="info-value">
+                        {formatDistance(positionAnalysis.currentBand.innerDistance)} - {formatDistance(positionAnalysis.currentBand.outerDistance)}
+                      </span>
+                    </div>
+                  )}
+
+                  {positionAnalysis.currentBand && (
+                    <div className="band-info">
+                      <span className="info-label">Density:</span>
+                      <span className="info-value">
+                        {Math.round(positionAnalysis.currentBand.relativeDensity * 100)}%
+                      </span>
+                    </div>
+                  )}
+
+                  {!positionAnalysis.isInHalo && (
+                    <div className="halo-range-hint">
+                      <span className="info-label">Aaron Halo Range:</span>
+                      <span className="info-value">
+                        {formatDistance(HALO_INNER_EDGE)} - {formatDistance(HALO_OUTER_EDGE)}
+                      </span>
+                    </div>
+                  )}
+
+                  {positionAnalysis.nearbyBands.length > 0 && !positionAnalysis.currentBand && (
+                    <div className="nearby-bands">
+                      <span className="info-label">Closest Band:</span>
+                      <span className="info-value">
+                        {positionAnalysis.closestBand.name} ({formatDistance(positionAnalysis.distanceToClosestBand)} away)
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {!positionAnalysis && distanceInput.trim() && (
+              <div className="text-warning" style={{ textAlign: 'center', padding: '1rem' }}>
+                Enter a valid distance (e.g., 20300000 or 20.3M)
+              </div>
+            )}
+
+            {!distanceInput.trim() && (
+              <div className="placeholder-message">
+                Enter your distance to Stanton to see your position in the Aaron Halo.
+              </div>
+            )}
           </div>
         )}
 
