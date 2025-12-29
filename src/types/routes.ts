@@ -787,16 +787,16 @@ export const ROUTES: PreCalculatedRoute[] = [
     destinationId: 'mic-l5',
     crossesHalo: true,
     bandExits: [
-      { bandId: 1, distanceFromStanton: 19_702_000, distanceToDestination: 25_688_478, distanceFromStart: 25_688_478 },
-      { bandId: 2, distanceFromStanton: 19_887_000, distanceToDestination: 25_917_214, distanceFromStart: 25_459_742 },
-      { bandId: 3, distanceFromStanton: 19_995_000, distanceToDestination: 26_120_249, distanceFromStart: 25_256_707 },
-      { bandId: 4, distanceFromStanton: 20_179_000, distanceToDestination: 26_397_447, distanceFromStart: 24_979_509 },
-      { bandId: 5, distanceFromStanton: 20_320_000, distanceToDestination: 26_589_888, distanceFromStart: 24_787_068 },
-      { bandId: 6, distanceFromStanton: 20_540_000, distanceToDestination: 26_805_213, distanceFromStart: 24_571_743 },
-      { bandId: 7, distanceFromStanton: 20_750_000, distanceToDestination: 27_076_738, distanceFromStart: 24_300_218 },
-      { bandId: 8, distanceFromStanton: 20_968_000, distanceToDestination: 27_384_314, distanceFromStart: 23_992_642 },
-      { bandId: 9, distanceFromStanton: 21_062_000, distanceToDestination: 27_662_684, distanceFromStart: 23_714_272 },
-      { bandId: 10, distanceFromStanton: 21_207_000, distanceToDestination: 27_835_342, distanceFromStart: 23_541_614 }
+      { bandId: 1, distanceFromStanton: 19_702_000, distanceToDestination: 27_667_983, distanceFromStart: 25_688_478 },
+      { bandId: 2, distanceFromStanton: 19_887_000, distanceToDestination: 27_439_247, distanceFromStart: 25_917_214 },
+      { bandId: 3, distanceFromStanton: 19_995_000, distanceToDestination: 27_236_213, distanceFromStart: 26_120_249 },
+      { bandId: 4, distanceFromStanton: 20_179_000, distanceToDestination: 26_959_015, distanceFromStart: 26_397_447 },
+      { bandId: 5, distanceFromStanton: 20_320_000, distanceToDestination: 26_766_574, distanceFromStart: 26_589_888 },
+      { bandId: 6, distanceFromStanton: 20_540_000, distanceToDestination: 26_551_248, distanceFromStart: 26_805_213 },
+      { bandId: 7, distanceFromStanton: 20_750_000, distanceToDestination: 26_279_724, distanceFromStart: 27_076_738 },
+      { bandId: 8, distanceFromStanton: 20_968_000, distanceToDestination: 25_972_148, distanceFromStart: 27_384_314 },
+      { bandId: 9, distanceFromStanton: 21_062_000, distanceToDestination: 25_693_778, distanceFromStart: 27_662_684 },
+      { bandId: 10, distanceFromStanton: 21_207_000, distanceToDestination: 25_521_120, distanceFromStart: 27_835_342 }
     ]
   },
 
