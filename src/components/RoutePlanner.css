@@ -164,6 +164,19 @@
   background: var(--bg-medium);
 }
 
+.band-row.clickable {
+  cursor: pointer;
+}
+
+.band-row.selected {
+  background: rgba(0, 255, 204, 0.15);
+  border-left: 3px solid var(--accent-cyan);
+}
+
+.band-row.selected:hover {
+  background: rgba(0, 255, 204, 0.2);
+}
+
 /* Density-based highlighting */
 .band-row.density-high {
   background: rgba(0, 255, 136, 0.08);
@@ -571,6 +584,34 @@
 .exit-margin.very-narrow {
   background: rgba(255, 68, 68, 0.15);
   color: var(--danger);
+}
+
+/* Destination Mode Result Section */
+.dest-result-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.exit-result.clickable {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.exit-result.clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 255, 204, 0.2);
+}
+
+.exit-result.clickable:active {
+  transform: translateY(0);
+}
+
+.collapse-hint {
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.7;
 }
 
 /* Mobile adjustments for band mode */
