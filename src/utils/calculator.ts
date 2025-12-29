@@ -210,16 +210,16 @@ export function formatDistance(distanceKm: number): string {
   const millions = distanceKm / 1_000_000;
 
   if (millions >= 10) {
-    return `${millions.toFixed(1)}M km`;
+    return `${millions.toFixed(1)} Gm`;
   } else if (millions >= 1) {
-    return `${millions.toFixed(2)}M km`;
+    return `${millions.toFixed(2)} Gm`;
   } else {
-    // Less than 1 million km, show in thousands
+    // Less than 1 million km, show in megameters (thousands of km)
     const thousands = distanceKm / 1_000;
     if (thousands >= 100) {
-      return `${thousands.toFixed(0)}K km`;
+      return `${thousands.toFixed(0)} Mm`;
     } else {
-      return `${thousands.toFixed(1)}K km`;
+      return `${thousands.toFixed(1)} Mm`;
     }
   }
 }
@@ -229,7 +229,7 @@ export function formatDistance(distanceKm: number): string {
  */
 export function formatDistanceCompact(distanceKm: number): string {
   const millions = distanceKm / 1_000_000;
-  return `${millions.toFixed(2)}M`;
+  return `${millions.toFixed(2)} Gm`;
 }
 
 /**

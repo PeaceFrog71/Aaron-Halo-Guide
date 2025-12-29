@@ -9,6 +9,10 @@ const version = '1.1.2'
 function App() {
   const [activeTab, setActiveTab] = useState<'route' | 'whereami' | 'refinery'>('route')
 
+  // Lifted route state - persists across tab switches
+  const [startId, setStartId] = useState<string>('')
+  const [destinationId, setDestinationId] = useState<string>('')
+
   return (
     <div className="app">
       <header className="app-header">
@@ -50,7 +54,12 @@ function App() {
           <div className="panel">
             <h2>Route Planner</h2>
             <p className="text-muted">Select your start and destination to calculate exit distances for each Aaron Halo band.</p>
-            <RoutePlanner />
+            <RoutePlanner
+              startId={startId}
+              destinationId={destinationId}
+              onStartChange={setStartId}
+              onDestinationChange={setDestinationId}
+            />
           </div>
         )}
 
