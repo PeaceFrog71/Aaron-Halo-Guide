@@ -4,7 +4,7 @@ import pfLogo from './assets/PFlogo.png'
 import { RoutePlanner } from './components/RoutePlanner'
 import { WhereAmI } from './components/WhereAmI'
 
-const version = '1.1.2'
+const version = '1.4.1'
 
 function App() {
   const [activeTab, setActiveTab] = useState<'route' | 'whereami' | 'refinery'>('route')
