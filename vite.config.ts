@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { version } from './package.json'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -7,5 +8,8 @@ export default defineConfig({
   base: '/',
   server: {
     port: 5174
+  },
+  define: {
+    __APP_VERSION__: JSON.stringify(version)
   }
 })
