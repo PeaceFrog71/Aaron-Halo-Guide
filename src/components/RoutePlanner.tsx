@@ -19,6 +19,7 @@ export function RoutePlanner() {
   const [destinationId, setDestinationId] = useState<string>('');
   const [selectedBandId, setSelectedBandId] = useState<number | null>(null);
   const [bandSortBy, setBandSortBy] = useState<BandSortBy>('density');
+  const [destModeSortBy, setDestModeSortBy] = useState<BandSortBy>('density');
 
   // Get available start locations
   const availableStarts = useMemo(() => {
@@ -44,6 +45,16 @@ export function RoutePlanner() {
     if (!startId || !destinationId) return null;
     return getRouteWithBandInfo(startId, destinationId);
   }, [startId, destinationId]);
+
+  // Sort band details for destination mode
+  const sortedBandDetails = useMemo(() => {
+    if (!routeData) return [];
+    const details = [...routeData.bandDetails];
+    if (destModeSortBy === 'density') {
+      return details.sort((a, b) => b.band.relativeDensity - a.band.relativeDensity);
+    }
+    return details.sort((a, b) => a.band.id - b.band.id);
+  }, [routeData, destModeSortBy]);
 
   // Get destinations sorted by band width (for band mode)
   const destinationsByWidth = useMemo(() => {
@@ -127,7 +138,7 @@ export function RoutePlanner() {
             <option value="">Select start...</option>
             {availableStarts.map(loc => (
               <option key={loc.id} value={loc.id}>
-                {loc.shortName} - {loc.name}
+                {loc.name}
               </option>
             ))}
           </select>
@@ -145,7 +156,7 @@ export function RoutePlanner() {
               <option value="">Select destination...</option>
               {availableDestinations.map(loc => (
                 <option key={loc.id} value={loc.id}>
-                  {loc.shortName} - {loc.name}
+                  {loc.name}
                 </option>
               ))}
             </select>
@@ -156,20 +167,30 @@ export function RoutePlanner() {
       {/* ===== DESTINATION MODE ===== */}
       {mode === 'destination' && routeData && startLocation && destLocation && (
         <div className="route-results">
-          <div className="route-summary">
-            <span className="route-label">Route:</span>
-            <span className="route-path">
-              {startLocation.shortName} → {destLocation.shortName}
-            </span>
-          </div>
-
           <div className="band-table">
+            <div className="band-controls">
+              <div className="sort-toggle">
+                <span className="sort-label">Sort:</span>
+                <button
+                  className={`sort-btn ${destModeSortBy === 'density' ? 'active' : ''}`}
+                  onClick={() => setDestModeSortBy('density')}
+                >
+                  Density
+                </button>
+                <button
+                  className={`sort-btn ${destModeSortBy === 'number' ? 'active' : ''}`}
+                  onClick={() => setDestModeSortBy('number')}
+                >
+                  Band #
+                </button>
+              </div>
+            </div>
             <div className="band-header">
               <span className="band-col-name">Band</span>
               <span className="band-col-dest">Exit at Distance</span>
               <span className="band-col-density">Density</span>
             </div>
-            {routeData.bandDetails.map(({ band, exit }) => (
+            {sortedBandDetails.map(({ band, exit }) => (
               <div key={band.id} className={`band-row density-${getDensityClass(band.relativeDensity)}`}>
                 <span className="band-col-name">{band.name}</span>
                 <span className="band-col-dest">{formatDistance(exit.distanceToDestination)}</span>
